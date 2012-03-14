@@ -18,7 +18,7 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.fail;
 import static org.fest.assertions.Assertions.assertThat;
 
-public class AbstractMongoTest {
+public class WithoutRulesTest {
 
     @BeforeClass
     public static void start_database_as_a_forked_process() throws IOException, InterruptedException {
