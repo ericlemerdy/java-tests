@@ -1,6 +1,5 @@
 package fr.lemerdy.eric;
 
-import static fr.lemerdy.eric.rule.MongoServerRule.MongoServerRuleBuilder.newMongoServerRule;
 import static org.fest.assertions.Assertions.assertThat;
 
 import org.junit.ClassRule;
@@ -15,14 +14,9 @@ import fr.lemerdy.eric.rule.MongoServerRule;
  * <p>
  * {@link MongoClientRule} will connect to the given mongo database before each method, then close the connection after each test.
  */
-public class WithMongoServerRuleAndClientServerRuleTest {
+public class WithMongoServerRuleBuilderAndClientServerRuleTest {
     @ClassRule
-    public static MongoServerRule mongoServer = newMongoServerRule() //
-            .mongodPath("c:\\dev\\mongodb\\bin\\mongodb.exe") //
-            .targetPath("target/mongo-temp") //
-            .dbRelativePath("db") //
-            .logRelativePath("log") //
-            .build();
+    public static MongoServerRule mongoServer = new MongoServerRule();
     @Rule
     public MongoClientRule mongo = new MongoClientRule("test");
 

@@ -23,17 +23,72 @@ import com.mongodb.MongoURI;
 
 /**
  * Run a mongodb server before each test suite.
- * <p>
- * many parts should be configurable via a builder, eric, it's up to you :)
  */
 public class MongoServerRule extends ExternalResource {
-    private String mongoPath = "../../mongodb-osx-x86_64-2.0.3/bin/mongod";
+    private String mongodPath = System.getProperty("MONGO_HOME", "../../mongodb-osx-x86_64-2.0.3/bin/mongod");
+    private String targetPath = "target";
+    private String dbRelativePath = "dbpath";
+    private String logRelativePath = "logpath";
 
     public MongoServerRule() {
     }
 
     public MongoServerRule(String mongoPath) {
-        this.mongoPath = mongoPath;
+        this.mongodPath = mongoPath;
+    }
+
+    public MongoServerRule(MongoServerRuleBuilder builder) {
+        this.mongodPath = builder.mongodPath;
+        this.targetPath = builder.targetPath;
+        this.dbRelativePath = builder.dbRelativePath;
+        this.logRelativePath = builder.logRelativePath;
+    }
+
+    /**
+     * Builder to start mongo server accordingly to your setup
+     * 
+     * @see
+     */
+    public static class MongoServerRuleBuilder {
+        private String mongodPath = System.getProperty("MONGO_HOME", "../../mongodb-osx-x86_64-2.0.3/bin/mongod");
+        private String targetPath = "target";
+        private String dbRelativePath = "dbpath";
+        private String logRelativePath = "logpath";
+
+        private MongoServerRuleBuilder() {
+        }
+
+        public static MongoServerRuleBuilder newMongoServerRule() {
+            return new MongoServerRuleBuilder();
+        }
+
+        public MongoServerRuleBuilder mongodPath(String mongodPath) {
+            this.mongodPath = mongodPath;
+            return this;
+        }
+
+        public MongoServerRuleBuilder targetPath(String targetPath) {
+            this.targetPath = targetPath;
+            return this;
+        }
+
+        public MongoServerRuleBuilder dbRelativePath(String dbRelativePath) {
+            this.dbRelativePath = dbRelativePath;
+            return this;
+        }
+
+        public MongoServerRuleBuilder logRelativePath(String logRelativePath) {
+            this.logRelativePath = logRelativePath;
+            return this;
+        }
+
+        public MongoServerRule build() {
+            assertThat(mongodPath).isNotNull();
+            assertThat(targetPath).isNotNull();
+            assertThat(dbRelativePath).isNotNull();
+            assertThat(logRelativePath).isNotNull();
+            return new MongoServerRule(this);
+        }
     }
 
     @Override
@@ -65,8 +120,8 @@ public class MongoServerRule extends ExternalResource {
     }
 
     private List<String> startMongoDBAsADaemon() throws IOException, InterruptedException {
-        ProcessBuilder processBuilder = new ProcessBuilder(mongoPath, "--dbpath", "dbpath", "--fork", "--logpath", "logpath");
-        processBuilder.directory(new File("target"));
+        ProcessBuilder processBuilder = new ProcessBuilder(mongodPath, "--dbpath", dbRelativePath, "--fork", "--logpath", logRelativePath);
+        processBuilder.directory(new File(targetPath));
         processBuilder.redirectErrorStream(true);
         Process pwd = processBuilder.start();
         BufferedReader outputReader = new BufferedReader(new InputStreamReader(pwd.getInputStream()));
@@ -94,7 +149,7 @@ public class MongoServerRule extends ExternalResource {
     }
 
     private File ensureDbPathDoesNotExits() {
-        File dbPath = new File("target/dbpath");
+        File dbPath = new File(targetPath + "/" + dbRelativePath);
         if (dbPath.exists()) {
             Files.delete(dbPath);
             assertThat(dbPath.exists()).isFalse();
