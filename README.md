@@ -1,13 +1,13 @@
 # MongoDB Rules
 
-Eric le Merdy @ericlemerdy wrote a blog about mongo db integration tests
+This is the maven companion of a blog post about mongo db integration tests.
 
 http://eric.lemerdy.free.fr/dotclear/index.php?post/2012/03/11/Start-and-stop-mongodb-with-Junit-in-java
 
-I wanted to play with junit @rule https://github.com/KentBeck/junit/blob/master/src/main/java/org/junit/Rule.java 
+Florent Ramière ([@framiere](http://twitter.com/framiere) wanted to play with junit [@rule](https://github.com/KentBeck/junit/blob/master/src/main/java/org/junit/Rule.java) 
 and see if you could do a rule for a class.
 
-Turns out it's possible, and pretty straightforward using @ClassRule https://github.com/KentBeck/junit/blob/master/src/main/java/org/junit/ClassRule.java
+Turns out it's possible, and pretty straightforward using [@ClassRule](https://github.com/KentBeck/junit/blob/master/src/main/java/org/junit/ClassRule.java)
 
 # Example
 
@@ -27,7 +27,7 @@ public class WithMongoServerRuleBuilderAndClientServerRuleTest {
 }
 ``` 
 
-which is strictly equivalent to the following code:
+Plus the *ClassRule* and *Rule* code, this is strictly equivalent to the following classic *BeforeClass* and *AfterClass* code:
 
 ``` java
 public class WithoutRulesTest {
@@ -113,7 +113,7 @@ public class WithoutRulesTest {
 
 # Builder
 
-Just for the fun of it, I added a little builder to setup your mongodb install
+Just for the fun of it, Florent added a little builder to setup your mongodb install
 
 ``` java
 public class WithMongoServerRuleAndClientServerRuleTest {
