@@ -4,6 +4,7 @@ import static fr.lemerdy.eric.rule.MongoServerRule.MongoServerRuleBuilder.newMon
 import static org.fest.assertions.Assertions.assertThat;
 
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -15,6 +16,7 @@ import fr.lemerdy.eric.rule.MongoServerRule;
  * <p>
  * {@link MongoClientRule} will connect to the given mongo database before each method, then close the connection after each test.
  */
+@Ignore("Mongo server path is dependant of the system that passes the tests.")
 public class WithMongoServerRuleAndClientServerRuleTest {
     @ClassRule
     public static MongoServerRule mongoServer = newMongoServerRule() //
