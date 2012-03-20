@@ -2,6 +2,7 @@ package fr.lemerdy.eric.rule;
 
 import static junit.framework.Assert.fail;
 import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.util.Files.delete;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -45,9 +46,7 @@ public class MongoServerRule extends ExternalResource {
     }
 
     /**
-     * Builder to start mongo server accordingly to your setup
-     * 
-     * @see
+     * Builder to start mongodb server accordingly to your setup
      */
     public static class MongoServerRuleBuilder {
         private String mongodPath = System.getProperty("MONGO_HOME", "../../mongodb-osx-x86_64-2.0.3/bin/mongod");
@@ -151,7 +150,7 @@ public class MongoServerRule extends ExternalResource {
     private File ensureDbPathDoesNotExits() {
         File dbPath = new File(targetPath + "/" + dbRelativePath);
         if (dbPath.exists()) {
-            Files.delete(dbPath);
+            delete(dbPath);
             assertThat(dbPath.exists()).isFalse();
         }
         return dbPath;

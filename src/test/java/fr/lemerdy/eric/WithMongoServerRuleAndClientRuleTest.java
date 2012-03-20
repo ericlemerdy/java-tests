@@ -14,14 +14,16 @@ import fr.lemerdy.eric.rule.MongoServerRule;
  * <p>
  * {@link MongoClientRule} will connect to the given mongo database before each method, then close the connection after each test.
  */
-public class WithMongoServerRuleBuilderAndClientServerRuleTest {
+public class WithMongoServerRuleAndClientRuleTest {
+    
     @ClassRule
     public static MongoServerRule mongoServer = new MongoServerRule();
+    
     @Rule
-    public MongoClientRule mongo = new MongoClientRule("test");
+    public MongoClientRule mongo = new MongoClientRule();
 
     @Test
     public void should_connect_to_the_test_database() throws Exception {
-        assertThat(mongo.getDatabase().getCollectionNames()).isNotNull();
+        assertThat(mongo.getMongo().getDB("test").getCollectionNames()).isNotNull();
     }
 }

@@ -14,6 +14,7 @@ import fr.lemerdy.eric.rule.MongoServerRule;
  * {@link MongoServerRule} starts the mongo db server before all the tests are run, then stopped after all tests are run.
  */
 public class WithMongoServerRuleTest {
+    
     @ClassRule
     public static MongoServerRule mongoServer = new MongoServerRule();
 
